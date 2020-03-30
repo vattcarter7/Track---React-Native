@@ -73,9 +73,16 @@ const signin = dispatch => async ({ email, password }) => {
 };
 
 const signout = dispatch => async () => {
-  await AsyncStorage.removeItem('token');
-  dispatch({ type: 'signout' });
-  navigate('Signin');
+  try {
+    await AsyncStorage.removeItem('token');
+    dispatch({ type: 'signout' });
+    navigate('Signin');
+  } catch (err) {
+    dispatch({
+      type: 'add_error',
+      payload: 'Something went wrong with signing out'
+    });
+  }
 };
 
 export const { Provider, Context } = createDataContext(
